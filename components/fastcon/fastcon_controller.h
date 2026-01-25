@@ -49,6 +49,7 @@ namespace esphome
             }
             void set_adv_duration(uint16_t val) { adv_duration_ = val; }
             void set_adv_gap(uint16_t val) { adv_gap_ = val; }
+            void set_command_retries(uint8_t val) { command_retries_ = val; }
 
         protected:
             struct Command
@@ -56,7 +57,6 @@ namespace esphome
                 std::vector<uint8_t> data;
                 uint32_t timestamp;
                 uint8_t retries{0};
-                static constexpr uint8_t MAX_RETRIES = 3;
             };
 
             std::queue<Command> queue_;
@@ -82,6 +82,9 @@ namespace esphome
             uint16_t adv_interval_max_{0x40};
             uint16_t adv_duration_{50};
             uint16_t adv_gap_{10};
+            uint8_t command_retries_{3};
+            Command current_command_;
+            bool has_current_command_{false};
 
             static const uint16_t MANUFACTURER_DATA_ID = 0xfff0;
         };

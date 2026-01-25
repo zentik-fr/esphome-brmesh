@@ -1,0 +1,72 @@
+esphome:
+  name: brmesh
+  friendly_name: BRMesh
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+external_components:
+  - source: github://dennispg/esphome-fastcon@main
+
+esp32_ble_tracker:
+esp32_ble_server:
+
+logger:
+
+api:
+  encryption:
+    key: "479yaWrhH/nMr2vYAMmCqWxH70rSi3Zry5/BZMcMwxU="
+
+ota:
+  - platform: esphome
+    password: "bf627630bcdd68b1f93b14e5855b495"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "BRMESH Fallback Hotspot"
+    password: "CKD41Oj&ccAEJI"
+
+captive_portal:
+
+fastcon:
+  mesh_key: "56219394"
+
+  # Optional parameters to control the advertisdement protocol with their defaults:
+  adv_interval_min: 0x20  # Minimum advertisement interval
+  adv_interval_max: 0x40  # Maximum advertisement interval
+  adv_duration: 150       # Advertisement duration in milliseconds (augmenté pour compenser)
+  adv_gap: 5              # Gap between advertisements in milliseconds
+  max_queue_size: 100     # Maximum number of queued commands
+
+light:
+  - platform: fastcon
+    id: brmesh_lamp_1
+    name: "Lamp1"
+    light_id: 1
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_OFF
+
+  - platform: fastcon
+    id: brmesh_lamp_2
+    name: "Lamp2"
+    light_id: 2
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_OFF
+
+  - platform: fastcon
+    id: brmesh_lamp_3
+    name: "Lamp3"
+    light_id: 3
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_OFF
+
+  - platform: fastcon
+    id: brmesh_lamp_4
+    name: "Lamp4"
+    light_id: 4
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_OFF

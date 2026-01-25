@@ -42,6 +42,7 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "  Advertisement interval: %d-%d", this->adv_interval_min_, this->adv_interval_max_);
             ESP_LOGCONFIG(TAG, "  Advertisement duration: %dms", this->adv_duration_);
             ESP_LOGCONFIG(TAG, "  Advertisement gap: %dms", this->adv_gap_);
+            ESP_LOGCONFIG(TAG, "  Command retries: %d", this->command_retries_);
         }
 
         void FastconController::loop()
@@ -52,12 +53,20 @@ namespace esphome
             {
             case AdvertiseState::IDLE:
             {
-                std::lock_guard<std::mutex> lock(queue_mutex_);
-                if (queue_.empty())
-                    return;
+                // Si on n'a pas de commande en cours, prendre la prochaine dans la queue
+                if (!has_current_command_)
+                {
+                    std::lock_guard<std::mutex> lock(queue_mutex_);
+                    if (queue_.empty())
+                        return;
 
-                Command cmd = queue_.front();
-                queue_.pop();
+                    current_command_ = queue_.front();
+                    queue_.pop();
+                    current_command_.retries = 0;
+                    has_current_command_ = true;
+                }
+
+                Command& cmd = current_command_;
 
                 esp_ble_adv_params_t adv_params = {
                     .adv_int_min = adv_interval_min_,
@@ -123,6 +132,21 @@ namespace esphome
             {
                 if (now - state_start_time_ >= adv_gap_)
                 {
+                    // Incrémenter le compteur de retries
+                    if (has_current_command_)
+                    {
+                        current_command_.retries++;
+                        if (current_command_.retries >= command_retries_)
+                        {
+                            // Commande envoyée suffisamment de fois, passer à la suivante
+                            has_current_command_ = false;
+                            ESP_LOGV(TAG, "Command sent %d times, moving to next", command_retries_);
+                        }
+                        else
+                        {
+                            ESP_LOGV(TAG, "Retrying command (%d/%d)", current_command_.retries, command_retries_);
+                        }
+                    }
                     adv_state_ = AdvertiseState::IDLE;
                     ESP_LOGV(TAG, "Gap period complete");
                 }
