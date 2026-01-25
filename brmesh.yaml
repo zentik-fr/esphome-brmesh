@@ -8,7 +8,8 @@ esp32:
     type: arduino
 
 external_components:
-  - source: github://dennispg/esphome-fastcon@main
+  - source: github://zentik-fr/esphome-brmesh@main
+    components: [fastcon]
 
 esp32_ble_tracker:
 esp32_ble_server:
@@ -38,9 +39,10 @@ fastcon:
   # Optional parameters to control the advertisdement protocol with their defaults:
   adv_interval_min: 0x20  # Minimum advertisement interval
   adv_interval_max: 0x40  # Maximum advertisement interval
-  adv_duration: 150       # Advertisement duration in milliseconds (augmenté pour compenser)
-  adv_gap: 5              # Gap between advertisements in milliseconds
+  adv_duration: 50        # Advertisement duration in milliseconds
+  adv_gap: 10             # Gap between advertisements in milliseconds
   max_queue_size: 100     # Maximum number of queued commands
+  command_retries: 3      # Nombre de fois qu'une commande est envoyée (3 par défaut)
 
 light:
   - platform: fastcon
