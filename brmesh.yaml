@@ -52,6 +52,15 @@ light:
     light_id: 1
     default_transition_length: 0s
     restore_mode: RESTORE_DEFAULT_OFF
+    # Effects will be enabled once protocol is discovered via BLE sniffing
+    # Uncomment and customize once effect codes are known:
+    # effects:
+    #   - strobe:
+    #       name: "Strobe"
+    #   - pulse:
+    #       name: "Pulse"
+    #   - random:
+    #       name: "Random"
 
   - platform: fastcon
     id: brmesh_lamp_2
@@ -59,6 +68,9 @@ light:
     light_id: 2
     default_transition_length: 0s
     restore_mode: RESTORE_DEFAULT_OFF
+    # effects:
+    #   - strobe:
+    #   - pulse:
 
   - platform: fastcon
     id: brmesh_lamp_3

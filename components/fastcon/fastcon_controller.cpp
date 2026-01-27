@@ -188,7 +188,7 @@ namespace esphome
             }
         }
 
-        std::vector<uint8_t> FastconController::get_light_data(light::LightState *state)
+        std::vector<uint8_t> FastconController::get_light_data(light::LightState *state, const LightEffect &effect)
         {
             std::vector<uint8_t> light_data = {
                 0, // 0 - On/Off Bit + 7-bit Brightness
@@ -196,7 +196,11 @@ namespace esphome
                 0, // 2 - Red byte
                 0, // 3 - Green byte
                 0, // 4 - Warm byte
-                0  // 5 - Cold byte
+                0, // 5 - Cold byte
+                // 6 - Effect ID (if effect.effect_id != 0)
+                // 7 - Effect Speed (if effect.effect_id != 0)
+                // 8 - Effect Param1 (if effect.effect_id != 0)
+                // 9 - Effect Param2 (if effect.effect_id != 0)
             };
 
             // TODO: need to figure out when esphome is changing to white vs setting brightness
@@ -257,6 +261,20 @@ namespace esphome
                     light_data[4] = (uint8_t)(((500 - temperature) * 255.0f + (temperature - 153) * 0x00) / (500 - 153));
                     light_data[5] = (uint8_t)(((temperature - 153) * 255.0f + (500 - temperature) * 0x00) / (500 - 153));
                 }
+            }
+
+            // TODO: Add effect data once protocol is discovered
+            // If an effect is active, append effect data to light_data
+            if (effect.effect_id != 0)
+            {
+                ESP_LOGD(TAG, "Effect requested: id=%d, speed=%d, param1=%d, param2=%d",
+                         effect.effect_id, effect.speed, effect.param1, effect.param2);
+                // Example format (to be confirmed by BLE sniffing):
+                // light_data.push_back(effect.effect_id);
+                // light_data.push_back(effect.speed);
+                // light_data.push_back(effect.param1);
+                // light_data.push_back(effect.param2);
+                ESP_LOGW(TAG, "Effects not yet implemented - protocol needs to be discovered via BLE sniffing");
             }
 
             return light_data;

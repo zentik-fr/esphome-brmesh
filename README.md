@@ -4,6 +4,19 @@ This is a custom component for ESPHome that allows you to control Broadlink Fast
 
 Be warned - there is also a brLight app, which might look like brMesh, but the protocol is different.
 
+## ✨ New: Light Effects Support (In Progress)
+
+The code has been prepared to support native BRMesh light effects. The protocol needs to be discovered via BLE sniffing.
+
+📘 **[Effects Implementation Guide](EFFECTS_IMPLEMENTATION_GUIDE.md)** - Complete guide to implement effects  
+📋 **[Protocol Analysis](PROTOCOL_ANALYSIS.md)** - Protocol documentation and analysis  
+🔍 **[BLE Sniffer Guide](ble_sniffer_esp32_arduino/README.md)** - How to capture BLE packets  
+📝 **[Changes Log](CHANGES.md)** - Recent modifications for effects support
+
+## Requirements
+
+Large correction of code, better implementation for Amazon Led Spots
+
 ## Requirements
 
 - ESP32 board

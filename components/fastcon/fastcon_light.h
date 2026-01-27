@@ -17,6 +17,15 @@ namespace esphome
             RGB
         };
 
+        // Structure to hold effect information
+        struct LightEffect
+        {
+            uint8_t effect_id{0};     // 0 = no effect, 1+ = effect codes (to be discovered)
+            uint8_t speed{128};       // Effect speed (0-255)
+            uint8_t param1{0};        // Additional parameter 1
+            uint8_t param2{0};        // Additional parameter 2
+        };
+
         class FastconLight : public Component, public light::LightOutput
         {
         public:

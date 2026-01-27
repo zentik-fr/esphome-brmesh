@@ -32,13 +32,31 @@ namespace esphome
             traits.set_supported_color_modes({light::ColorMode::RGB, light::ColorMode::WHITE, light::ColorMode::BRIGHTNESS, light::ColorMode::COLD_WARM_WHITE});
             traits.set_min_mireds(153);
             traits.set_max_mireds(500);
+            // Effects will be enabled once protocol is discovered
+            // Uncomment and add effects once effect codes are known:
+            // traits.add_supported_effect("Rainbow");
+            // traits.add_supported_effect("Flash");
+            // traits.add_supported_effect("Fade");
             return traits;
         }
 
         void FastconLight::write_state(light::LightState *state)
         {
+            // Check if an effect is active
+            LightEffect effect;
+            std::string effect_name = state->get_effect_name();
+            if (!effect_name.empty())
+            {
+                // Map effect name to effect parameters
+                // TODO: Once effect protocol is discovered, map effect names to effect IDs
+                // Example:
+                // if (effect_name == "Rainbow") effect.effect_id = 1;
+                // else if (effect_name == "Flash") effect.effect_id = 2;
+                ESP_LOGD(TAG, "Effect active: %s (not yet implemented)", effect_name.c_str());
+            }
+
             // Get the light data bits from the state
-            auto light_data = this->controller_->get_light_data(state);
+            auto light_data = this->controller_->get_light_data(state, effect);
 
             // Debug output - print the light state values
             bool is_on = (light_data[0] & 0x80) != 0;
