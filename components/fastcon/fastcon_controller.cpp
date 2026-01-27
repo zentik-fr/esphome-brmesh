@@ -54,26 +54,46 @@ namespace esphome
             {
             case AdvertiseState::IDLE:
             {
-                // Si on n'a pas de commande en cours, prendre la prochaine dans la queue
-                if (!has_current_command_)
+                // Vérifier s'il y a une nouvelle commande dans la queue
                 {
                     std::lock_guard<std::mutex> lock(queue_mutex_);
-                    if (queue_.empty())
-                        return;
-
-                    current_command_ = queue_.front();
-                    queue_.pop();
-                    
-                    // Détecter si c'est une nouvelle commande différente
-                    if (current_command_.data != last_command_data_)
+                    if (!queue_.empty())
                     {
-                        // Nouvelle commande : réinitialiser le compteur
-                        current_command_.retries = 0;
-                        last_command_data_ = current_command_.data;
-                        ESP_LOGD(TAG, "New command detected, resetting retry counter");
+                        // Regarder la prochaine commande sans la retirer
+                        const Command& next_cmd = queue_.front();
+                        
+                        // Si on a une commande en cours ET que la nouvelle est différente
+                        if (has_current_command_ && next_cmd.data != current_command_.data)
+                        {
+                            // Nouvelle commande prioritaire : abandonner l'actuelle
+                            ESP_LOGD(TAG, "New priority command detected, interrupting current command (%d/%d sent)", 
+                                     current_command_.retries + 1, command_retries_);
+                            has_current_command_ = false;
+                        }
+                        
+                        // Si on n'a pas de commande en cours, prendre la suivante
+                        if (!has_current_command_)
+                        {
+                            current_command_ = queue_.front();
+                            queue_.pop();
+                            
+                            // Détecter si c'est une nouvelle commande différente
+                            if (current_command_.data != last_command_data_)
+                            {
+                                // Nouvelle commande : réinitialiser le compteur
+                                current_command_.retries = 0;
+                                last_command_data_ = current_command_.data;
+                                ESP_LOGD(TAG, "New command detected, resetting retry counter");
+                            }
+                            
+                            has_current_command_ = true;
+                        }
                     }
-                    
-                    has_current_command_ = true;
+                    else if (!has_current_command_)
+                    {
+                        // Pas de commande en cours et queue vide
+                        return;
+                    }
                 }
 
                 Command& cmd = current_command_;
