@@ -50,6 +50,7 @@ namespace esphome
             void set_adv_duration(uint16_t val) { adv_duration_ = val; }
             void set_adv_gap(uint16_t val) { adv_gap_ = val; }
             void set_command_retries(uint8_t val) { command_retries_ = val; }
+            void set_command_interval(uint16_t val) { command_interval_ = val; }
 
         protected:
             struct Command
@@ -82,9 +83,11 @@ namespace esphome
             uint16_t adv_interval_max_{0x40};
             uint16_t adv_duration_{50};
             uint16_t adv_gap_{10};
-            uint8_t command_retries_{3};
+            uint8_t command_retries_{20};
+            uint16_t command_interval_{90};
             Command current_command_;
             bool has_current_command_{false};
+            std::vector<uint8_t> last_command_data_;
 
             static const uint16_t MANUFACTURER_DATA_ID = 0xfff0;
         };

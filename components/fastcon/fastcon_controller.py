@@ -12,13 +12,15 @@ CONF_ADV_DURATION = "adv_duration"
 CONF_ADV_GAP = "adv_gap"
 CONF_MAX_QUEUE_SIZE = "max_queue_size"
 CONF_COMMAND_RETRIES = "command_retries"
+CONF_COMMAND_INTERVAL = "command_interval"
 
 DEFAULT_ADV_INTERVAL_MIN = 0x20
 DEFAULT_ADV_INTERVAL_MAX = 0x40
 DEFAULT_ADV_DURATION = 50
 DEFAULT_ADV_GAP = 10
 DEFAULT_MAX_QUEUE_SIZE = 100
-DEFAULT_COMMAND_RETRIES = 3
+DEFAULT_COMMAND_RETRIES = 20
+DEFAULT_COMMAND_INTERVAL = 90
 
 
 def validate_hex_bytes(value):
@@ -56,7 +58,10 @@ CONFIG_SCHEMA = cv.Schema(
         ): cv.positive_int,
         cv.Optional(
             CONF_COMMAND_RETRIES, default=DEFAULT_COMMAND_RETRIES
-        ): cv.int_range(min=1, max=10),
+        ): cv.int_range(min=1, max=50),
+        cv.Optional(
+            CONF_COMMAND_INTERVAL, default=DEFAULT_COMMAND_INTERVAL
+        ): cv.int_range(min=10, max=500),
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
@@ -82,3 +87,4 @@ async def to_code(config):
     cg.add(var.set_adv_gap(config[CONF_ADV_GAP]))
     cg.add(var.set_max_queue_size(config[CONF_MAX_QUEUE_SIZE]))
     cg.add(var.set_command_retries(config[CONF_COMMAND_RETRIES]))
+    cg.add(var.set_command_interval(config[CONF_COMMAND_INTERVAL]))
