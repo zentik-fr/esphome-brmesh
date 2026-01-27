@@ -160,7 +160,10 @@ namespace esphome
 
             case AdvertiseState::GAP:
             {
-                if (now - state_start_time_ >= command_interval_)
+                // Calculer le temps de gap pour respecter command_interval total
+                uint32_t gap_duration = command_interval_ > adv_duration_ ? command_interval_ - adv_duration_ : 0;
+                
+                if (now - state_start_time_ >= gap_duration)
                 {
                     // Incrémenter le compteur de retries
                     if (has_current_command_)

@@ -37,13 +37,12 @@ fastcon:
   mesh_key: "56219394"
 
   # Optional parameters to control the advertisdement protocol with their defaults:
-  adv_interval_min: 0x20  # Minimum advertisement interval
-  adv_interval_max: 0x40  # Maximum advertisement interval
-  adv_duration: 60        # Advertisement duration in milliseconds
-  adv_gap: 10             # Gap between advertisements in milliseconds
+  adv_interval_min: 0x20  # Minimum advertisement interval (BLE low-level parameter)
+  adv_interval_max: 0x40  # Maximum advertisement interval (BLE low-level parameter)
+  adv_duration: 50        # Advertisement duration in milliseconds
   max_queue_size: 100     # Maximum number of queued commands
   command_retries: 20     # Nombre de fois que la dernière commande est envoyée (observé: 20 fois)
-  command_interval: 90    # Intervalle entre chaque répétition en ms (observé: 60-120ms)
+  command_interval: 90    # Temps TOTAL entre deux envois en ms (observé: 60-120ms, donc ~90ms)
 
 light:
   - platform: fastcon
