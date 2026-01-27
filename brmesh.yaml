@@ -36,13 +36,14 @@ captive_portal:
 fastcon:
   mesh_key: "56219394"
 
-  # Optional parameters to control the advertisdement protocol with their defaults:
+  # Paramètres selon le protocole BRMesh observé:
   adv_interval_min: 0x20  # Minimum advertisement interval (BLE low-level parameter)
   adv_interval_max: 0x40  # Maximum advertisement interval (BLE low-level parameter)
-  adv_duration: 50        # Advertisement duration in milliseconds
+  adv_duration: 15        # Durée de diffusion BLE en ms (courte pour permettre envoi rapide)
   max_queue_size: 100     # Maximum number of queued commands
-  command_retries: 20     # Nombre de fois que la dernière commande est envoyée (observé: 20 fois)
-  command_interval: 90    # Temps TOTAL entre deux envois en ms (observé: 60-120ms, donc ~90ms)
+  command_retries: 20     # Nombre d'envois par commande (spec BRMesh: 15-30, recommandé: 20)
+  command_interval: 25    # Délai TOTAL entre deux envois en ms (spec BRMesh: 20-30ms, recommandé: 25ms)
+  # Résultat: 20 paquets × 25ms = 500ms par commande (conforme spec BRMesh: 300-800ms)
 
 light:
   - platform: fastcon

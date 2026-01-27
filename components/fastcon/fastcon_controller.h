@@ -81,10 +81,10 @@ namespace esphome
 
             uint16_t adv_interval_min_{0x20};
             uint16_t adv_interval_max_{0x40};
-            uint16_t adv_duration_{50};
+            uint16_t adv_duration_{15};
             uint16_t adv_gap_{10};
             uint8_t command_retries_{20};
-            uint16_t command_interval_{90};
+            uint16_t command_interval_{25};
             Command current_command_;
             bool has_current_command_{false};
             std::vector<uint8_t> last_command_data_;
