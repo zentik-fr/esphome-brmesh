@@ -42,7 +42,8 @@ fastcon:
   adv_duration: 60        # Advertisement duration in milliseconds
   adv_gap: 10             # Gap between advertisements in milliseconds
   max_queue_size: 100     # Maximum number of queued commands
-  command_retries: 5      # Nombre de fois qu'une commande est envoyée (augmenté à 5)
+  command_retries: 20     # Nombre de fois que la dernière commande est envoyée (observé: 20 fois)
+  command_interval: 90    # Intervalle entre chaque répétition en ms (observé: 60-120ms)
 
 light:
   - platform: fastcon
