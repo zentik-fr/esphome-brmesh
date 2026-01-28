@@ -43,7 +43,7 @@ namespace esphome
         void FastconLight::write_state(light::LightState *state)
         {
             // Check if an effect is active
-            LightEffect effect;
+            fastcon::LightEffect effect;
             std::string effect_name = state->get_effect_name();
             if (!effect_name.empty())
             {

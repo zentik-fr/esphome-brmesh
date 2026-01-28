@@ -54,21 +54,21 @@ namespace esphome
             // Type 0x48: Simple effects (1 parameter)
             if (effect.type == 0x48 && effect.param_count >= 1)
             {
-                data = {0x48, light_id, effect.speed, effect.effect_id, effect.params[0], 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+                data = std::vector<uint8_t>{0x48, light_id, effect.speed, effect.effect_id, effect.params[0], 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
                 ESP_LOGD(TAG, "Type 0x48: speed=%d, effect_id=0x%02x, param=0x%02x",
                          effect.speed, effect.effect_id, effect.params[0]);
             }
             // Type 0x58: Medium effects (2 parameters)
             else if (effect.type == 0x58 && effect.param_count >= 2)
             {
-                data = {0x58, light_id, effect.speed, effect.effect_id, effect.params[0], effect.params[1], 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+                data = std::vector<uint8_t>{0x58, light_id, effect.speed, effect.effect_id, effect.params[0], effect.params[1], 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
                 ESP_LOGD(TAG, "Type 0x58: speed=%d, effect_id=0x%02x, params=0x%02x,0x%02x",
                          effect.speed, effect.effect_id, effect.params[0], effect.params[1]);
             }
             // Type 0x88: Complex effects (5 parameters)
             else if (effect.type == 0x88 && effect.param_count >= 5)
             {
-                data = {0x88, light_id, effect.speed, effect.effect_id,
+                data = std::vector<uint8_t>{0x88, light_id, effect.speed, effect.effect_id,
                         effect.params[0], effect.params[1], effect.params[2], effect.params[3], effect.params[4],
                         0x00, 0x00, 0x00};
                 ESP_LOGD(TAG, "Type 0x88: speed=%d, effect_id=0x%02x, params=0x%02x,0x%02x,0x%02x,0x%02x,0x%02x",
