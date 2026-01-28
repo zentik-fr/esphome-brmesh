@@ -50,52 +50,59 @@ namespace esphome
                 // Map effect names to BRMesh effect configurations
                 ESP_LOGD(TAG, "Effect active: %s", effect_name.c_str());
                 
+                // Helper to parse speed from effect name (e.g., "Christmas Slow" -> 25)
+                uint8_t speed = 50; // Default medium speed
+                if (effect_name.find(" Slow") != std::string::npos) speed = 25;
+                else if (effect_name.find(" Fast") != std::string::npos) speed = 75;
+                
                 // Type 0x48: Simple effects (1 parameter)
-                if (effect_name == "Romantic") {
+                if (effect_name.find("Romantic") == 0) {
                     effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
-                    effect.params[0] = 0x00; effect.speed = 50;
+                    effect.params[0] = 0x00; effect.speed = speed;
                 }
-                else if (effect_name == "Cozy") {
+                else if (effect_name.find("Cozy") == 0) {
                     effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
-                    effect.params[0] = 0x01; effect.speed = 50;
+                    effect.params[0] = 0x01; effect.speed = speed;
                 }
-                else if (effect_name == "Christmas") {
+                else if (effect_name.find("Christmas") == 0) {
                     effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
-                    effect.params[0] = 0x04; effect.speed = 50;
+                    effect.params[0] = 0x04; effect.speed = speed;
                 }
-                else if (effect_name == "Winter") {
+                else if (effect_name.find("Winter") == 0) {
                     effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
-                    effect.params[0] = 0x0b; effect.speed = 50;
+                    effect.params[0] = 0x0b; effect.speed = speed;
                 }
-                else if (effect_name == "Halloween") {
+                else if (effect_name.find("Halloween") == 0) {
                     effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
-                    effect.params[0] = 0x0c; effect.speed = 50;
+                    effect.params[0] = 0x0c; effect.speed = speed;
                 }
-                else if (effect_name == "Valentines") {
+                else if (effect_name.find("Valentines") == 0) {
                     effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
-                    effect.params[0] = 0x0d; effect.speed = 50;
+                    effect.params[0] = 0x0d; effect.speed = speed;
                 }
                 // Type 0x58: Medium effects (2 parameters)
-                else if (effect_name == "Fresh") {
+                else if (effect_name.find("Fresh") == 0) {
                     effect.type = 0x58; effect.effect_id = 0x42; effect.param_count = 2;
-                    effect.params[0] = 0x02; effect.params[1] = 0x0a; effect.speed = 50;
+                    effect.params[0] = 0x02; effect.params[1] = 0x0a; effect.speed = speed;
                 }
-                else if (effect_name == "Three Color Flash") {
+                else if (effect_name.find("Three Color Flash") == 0) {
                     effect.type = 0x58; effect.effect_id = 0xc2; effect.param_count = 2;
-                    effect.params[0] = 0x04; effect.params[1] = 0x05; effect.speed = 50;
+                    effect.params[0] = 0x04; effect.params[1] = 0x05; 
+                    effect.speed = (speed == 25) ? 75 : (speed == 75) ? 25 : 50; // Invert for flash
                 }
                 // Type 0x88: Complex effects (5 parameters)
-                else if (effect_name == "Full Color Fade") {
+                else if (effect_name.find("Full Color Fade") == 0) {
                     effect.type = 0x88; effect.effect_id = 0x42; effect.param_count = 5;
                     effect.params[0] = 0x03; effect.params[1] = 0x01;
                     effect.params[2] = 0x05; effect.params[3] = 0x04;
-                    effect.params[4] = 0x06; effect.speed = 50;
+                    effect.params[4] = 0x06; effect.speed = speed;
                 }
-                else if (effect_name == "Full Color Flash") {
+                else if (effect_name.find("Full Color Flash") == 0) {
                     effect.type = 0x88; effect.effect_id = 0xc2; effect.param_count = 5;
                     effect.params[0] = 0x03; effect.params[1] = 0x01;
                     effect.params[2] = 0x05; effect.params[3] = 0x04;
-                    effect.params[4] = 0x06; effect.speed = 50;
+                    effect.params[4] = 0x06; 
+                    effect.speed = (speed == 25) ? 75 : (speed == 75) ? 25 : 50; // Invert for flash
                 }
                 else {
                     ESP_LOGW(TAG, "Unknown effect: %s", effect_name.c_str());

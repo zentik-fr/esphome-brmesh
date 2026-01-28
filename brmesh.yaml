@@ -57,6 +57,124 @@ light:
     default_transition_length: 0s
     restore_mode: RESTORE_DEFAULT_OFF
     effects:
+      # Effets avec variantes de vitesse : Slow (25), Medium (50 - défaut), Fast (75)
+      
+      # Type 0x48: Simple effects
+      - lambda:
+          name: "Christmas Slow"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 25
+      - lambda:
+          name: "Christmas"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50 (default)
+      - lambda:
+          name: "Christmas Fast"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 75
+            
+      - lambda:
+          name: "Romantic Slow"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 25
+      - lambda:
+          name: "Romantic"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Romantic Fast"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 75
+            
+      - lambda:
+          name: "Cozy"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Winter"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Halloween"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Valentines"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+            
+      # Type 0x58: Medium effects
+      - lambda:
+          name: "Fresh"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Three Color Flash Slow"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 25 (inverted to 75 for flash)
+      - lambda:
+          name: "Three Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Three Color Flash Fast"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 75 (inverted to 25 for flash)
+            
+      # Type 0x88: Complex effects
+      - lambda:
+          name: "Full Color Fade Slow"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 25
+      - lambda:
+          name: "Full Color Fade"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Full Color Fade Fast"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 75
+            
+      - lambda:
+          name: "Full Color Flash Slow"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 25 (inverted to 75 for flash)
+      - lambda:
+          name: "Full Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 50
+      - lambda:
+          name: "Full Color Flash Fast"
+          update_interval: 16ms
+          lambda: |-
+            // Speed 75 (inverted to 25 for flash)
+
+  - platform: fastcon
+    id: brmesh_lamp_2
+    name: "Lamp2"
+    light_id: 2
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_OFF
+    effects:
       # Type 0x48: Simple effects (1 parameter)
       - lambda:
           name: "Romantic"
@@ -111,15 +229,6 @@ light:
           lambda: |-
             // Effect handled by BRMesh protocol
 
-  - platform: fastcon
-    id: brmesh_lamp_2
-    name: "Lamp2"
-    light_id: 2
-    default_transition_length: 0s
-    restore_mode: RESTORE_DEFAULT_OFF
-    # effects:
-    #   - strobe:
-    #   - pulse:
 
   - platform: fastcon
     id: brmesh_lamp_3
@@ -127,6 +236,61 @@ light:
     light_id: 3
     default_transition_length: 0s
     restore_mode: RESTORE_DEFAULT_OFF
+    effects:
+      # Type 0x48: Simple effects (1 parameter)
+      - lambda:
+          name: "Romantic"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Cozy"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Christmas"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Winter"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Halloween"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Valentines"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      # Type 0x58: Medium effects (2 parameters)
+      - lambda:
+          name: "Fresh"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Three Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      # Type 0x88: Complex effects (5 parameters)
+      - lambda:
+          name: "Full Color Fade"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Full Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+
 
   - platform: fastcon
     id: brmesh_lamp_4
@@ -134,3 +298,58 @@ light:
     light_id: 4
     default_transition_length: 0s
     restore_mode: RESTORE_DEFAULT_OFF
+    effects:
+      # Type 0x48: Simple effects (1 parameter)
+      - lambda:
+          name: "Romantic"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Cozy"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Christmas"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Winter"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Halloween"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Valentines"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      # Type 0x58: Medium effects (2 parameters)
+      - lambda:
+          name: "Fresh"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Three Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      # Type 0x88: Complex effects (5 parameters)
+      - lambda:
+          name: "Full Color Fade"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Full Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+
