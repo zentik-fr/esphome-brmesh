@@ -8,7 +8,11 @@ esp32:
     type: arduino
 
 external_components:
-  - source: github://zentik-fr/esphome-brmesh@main
+  - source: 
+      type: git
+      url: https://github.com/zentik-fr/esphome-brmesh
+      ref: main
+    refresh: 0s
     components: [fastcon]
 
 esp32_ble_tracker:
