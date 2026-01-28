@@ -258,9 +258,13 @@ namespace esphome
 
             if (has_white)
             {
-                return std::vector<uint8_t>({static_cast<uint8_t>(brightness)});
-                // DEBUG: when changing to white mode, this should be the payload:
-                // ff0000007f7f
+                // White mode: RGB à 0, warm/cold à 50/50 pour blanc neutre
+                light_data[1] = 0x00;  // Blue = 0
+                light_data[2] = 0x00;  // Red = 0
+                light_data[3] = 0x00;  // Green = 0
+                light_data[4] = 0x7f;  // Warm = 50% (127)
+                light_data[5] = 0x7f;  // Cold = 50% (127)
+                return light_data;
             }
 
             bool has_rgb = (static_cast<uint8_t>(color_mode) & static_cast<uint8_t>(light::ColorCapability::RGB)) != 0;
