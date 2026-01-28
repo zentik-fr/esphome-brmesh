@@ -47,7 +47,7 @@ namespace esphome
         }
 
         // Encode effect data based on effect type (0x48, 0x58, 0x88)
-        std::vector<uint8_t> encode_effect_data(uint8_t light_id, const LightEffect &effect)
+        std::vector<uint8_t> encode_effect_data(uint8_t light_id, const fastcon::LightEffect &effect)
         {
             std::vector<uint8_t> data;
 
