@@ -22,7 +22,7 @@ namespace esphome
             // Forward declaration
             struct LightEffect;
 
-            std::vector<uint8_t> get_light_data(light::LightState *state, const struct LightEffect &effect = {});
+            std::vector<uint8_t> get_light_data(uint8_t light_id, light::LightState *state, const struct LightEffect &effect = {});
             std::vector<uint8_t> single_control(uint32_t addr, const std::vector<uint8_t> &light_data);
 
             void queueCommand(uint32_t light_id_, const std::vector<uint8_t> &data);

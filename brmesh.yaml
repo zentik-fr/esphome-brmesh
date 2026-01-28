@@ -52,15 +52,60 @@ light:
     light_id: 1
     default_transition_length: 0s
     restore_mode: RESTORE_DEFAULT_OFF
-    # Effects will be enabled once protocol is discovered via BLE sniffing
-    # Uncomment and customize once effect codes are known:
-    # effects:
-    #   - strobe:
-    #       name: "Strobe"
-    #   - pulse:
-    #       name: "Pulse"
-    #   - random:
-    #       name: "Random"
+    effects:
+      # Type 0x48: Simple effects (1 parameter)
+      - lambda:
+          name: "Romantic"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Cozy"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Christmas"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Winter"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Halloween"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Valentines"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      # Type 0x58: Medium effects (2 parameters)
+      - lambda:
+          name: "Fresh"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Three Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      # Type 0x88: Complex effects (5 parameters)
+      - lambda:
+          name: "Full Color Fade"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
+      - lambda:
+          name: "Full Color Flash"
+          update_interval: 16ms
+          lambda: |-
+            // Effect handled by BRMesh protocol
 
   - platform: fastcon
     id: brmesh_lamp_2

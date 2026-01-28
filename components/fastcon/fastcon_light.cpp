@@ -47,16 +47,63 @@ namespace esphome
             std::string effect_name = state->get_effect_name();
             if (!effect_name.empty())
             {
-                // Map effect name to effect parameters
-                // TODO: Once effect protocol is discovered, map effect names to effect IDs
-                // Example:
-                // if (effect_name == "Rainbow") effect.effect_id = 1;
-                // else if (effect_name == "Flash") effect.effect_id = 2;
-                ESP_LOGD(TAG, "Effect active: %s (not yet implemented)", effect_name.c_str());
+                // Map effect names to BRMesh effect configurations
+                ESP_LOGD(TAG, "Effect active: %s", effect_name.c_str());
+                
+                // Type 0x48: Simple effects (1 parameter)
+                if (effect_name == "Romantic") {
+                    effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
+                    effect.params[0] = 0x00; effect.speed = 50;
+                }
+                else if (effect_name == "Cozy") {
+                    effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
+                    effect.params[0] = 0x01; effect.speed = 50;
+                }
+                else if (effect_name == "Christmas") {
+                    effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
+                    effect.params[0] = 0x04; effect.speed = 50;
+                }
+                else if (effect_name == "Winter") {
+                    effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
+                    effect.params[0] = 0x0b; effect.speed = 50;
+                }
+                else if (effect_name == "Halloween") {
+                    effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
+                    effect.params[0] = 0x0c; effect.speed = 50;
+                }
+                else if (effect_name == "Valentines") {
+                    effect.type = 0x48; effect.effect_id = 0x42; effect.param_count = 1;
+                    effect.params[0] = 0x0d; effect.speed = 50;
+                }
+                // Type 0x58: Medium effects (2 parameters)
+                else if (effect_name == "Fresh") {
+                    effect.type = 0x58; effect.effect_id = 0x42; effect.param_count = 2;
+                    effect.params[0] = 0x02; effect.params[1] = 0x0a; effect.speed = 50;
+                }
+                else if (effect_name == "Three Color Flash") {
+                    effect.type = 0x58; effect.effect_id = 0xc2; effect.param_count = 2;
+                    effect.params[0] = 0x04; effect.params[1] = 0x05; effect.speed = 50;
+                }
+                // Type 0x88: Complex effects (5 parameters)
+                else if (effect_name == "Full Color Fade") {
+                    effect.type = 0x88; effect.effect_id = 0x42; effect.param_count = 5;
+                    effect.params[0] = 0x03; effect.params[1] = 0x01;
+                    effect.params[2] = 0x05; effect.params[3] = 0x04;
+                    effect.params[4] = 0x06; effect.speed = 50;
+                }
+                else if (effect_name == "Full Color Flash") {
+                    effect.type = 0x88; effect.effect_id = 0xc2; effect.param_count = 5;
+                    effect.params[0] = 0x03; effect.params[1] = 0x01;
+                    effect.params[2] = 0x05; effect.params[3] = 0x04;
+                    effect.params[4] = 0x06; effect.speed = 50;
+                }
+                else {
+                    ESP_LOGW(TAG, "Unknown effect: %s", effect_name.c_str());
+                }
             }
 
             // Get the light data bits from the state
-            auto light_data = this->controller_->get_light_data(state, effect);
+            auto light_data = this->controller_->get_light_data(this->light_id_, state, effect);
 
             // Debug output - print the light state values
             bool is_on = (light_data[0] & 0x80) != 0;

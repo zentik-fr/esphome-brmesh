@@ -46,6 +46,44 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "  Command interval: %dms", this->command_interval_);
         }
 
+        // Encode effect data based on effect type (0x48, 0x58, 0x88)
+        std::vector<uint8_t> encode_effect_data(uint8_t light_id, const LightEffect &effect)
+        {
+            std::vector<uint8_t> data;
+
+            // Type 0x48: Simple effects (1 parameter)
+            if (effect.type == 0x48 && effect.param_count >= 1)
+            {
+                data = {0x48, light_id, effect.speed, effect.effect_id, effect.params[0], 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+                ESP_LOGD(TAG, "Type 0x48: speed=%d, effect_id=0x%02x, param=0x%02x",
+                         effect.speed, effect.effect_id, effect.params[0]);
+            }
+            // Type 0x58: Medium effects (2 parameters)
+            else if (effect.type == 0x58 && effect.param_count >= 2)
+            {
+                data = {0x58, light_id, effect.speed, effect.effect_id, effect.params[0], effect.params[1], 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+                ESP_LOGD(TAG, "Type 0x58: speed=%d, effect_id=0x%02x, params=0x%02x,0x%02x",
+                         effect.speed, effect.effect_id, effect.params[0], effect.params[1]);
+            }
+            // Type 0x88: Complex effects (5 parameters)
+            else if (effect.type == 0x88 && effect.param_count >= 5)
+            {
+                data = {0x88, light_id, effect.speed, effect.effect_id,
+                        effect.params[0], effect.params[1], effect.params[2], effect.params[3], effect.params[4],
+                        0x00, 0x00, 0x00};
+                ESP_LOGD(TAG, "Type 0x88: speed=%d, effect_id=0x%02x, params=0x%02x,0x%02x,0x%02x,0x%02x,0x%02x",
+                         effect.speed, effect.effect_id, effect.params[0], effect.params[1],
+                         effect.params[2], effect.params[3], effect.params[4]);
+            }
+            else
+            {
+                ESP_LOGW(TAG, "Invalid effect configuration: type=0x%02x, param_count=%d",
+                         effect.type, effect.param_count);
+            }
+
+            return data;
+        }
+
         void FastconController::loop()
         {
             const uint32_t now = millis();
@@ -188,7 +226,7 @@ namespace esphome
             }
         }
 
-        std::vector<uint8_t> FastconController::get_light_data(light::LightState *state, const LightEffect &effect)
+        std::vector<uint8_t> FastconController::get_light_data(uint8_t light_id, light::LightState *state, const LightEffect &effect)
         {
             std::vector<uint8_t> light_data = {
                 0, // 0 - On/Off Bit + 7-bit Brightness
@@ -263,18 +301,12 @@ namespace esphome
                 }
             }
 
-            // TODO: Add effect data once protocol is discovered
-            // If an effect is active, append effect data to light_data
-            if (effect.effect_id != 0)
+            // If an effect is active, use effect encoding instead of RGB/White data
+            if (effect.type != 0 && effect.effect_id != 0)
             {
-                ESP_LOGD(TAG, "Effect requested: id=%d, speed=%d, param1=%d, param2=%d",
-                         effect.effect_id, effect.speed, effect.param1, effect.param2);
-                // Example format (to be confirmed by BLE sniffing):
-                // light_data.push_back(effect.effect_id);
-                // light_data.push_back(effect.speed);
-                // light_data.push_back(effect.param1);
-                // light_data.push_back(effect.param2);
-                ESP_LOGW(TAG, "Effects not yet implemented - protocol needs to be discovered via BLE sniffing");
+                ESP_LOGD(TAG, "Effect active: type=0x%02x, effect_id=0x%02x, speed=%d",
+                         effect.type, effect.effect_id, effect.speed);
+                return encode_effect_data(light_id, effect);
             }
 
             return light_data;
