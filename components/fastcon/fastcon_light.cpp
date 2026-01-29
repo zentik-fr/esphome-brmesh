@@ -133,8 +133,8 @@ namespace esphome
             auto adv_data = this->controller_->single_control(this->light_id_, light_data);
 
             // Debug output - print payload as hex
-            auto hex_str = vector_to_hex_string(adv_data).data();
-            ESP_LOGD(TAG, "Advertisement Payload (%d bytes): %s", adv_data.size(), hex_str);
+            auto hex_str = vector_to_hex_string(adv_data);
+            ESP_LOGD(TAG, "Advertisement Payload (%d bytes): %s", adv_data.size(), hex_str.c_str());
 
             // Send the advertisement
             this->controller_->queueCommand(this->light_id_, adv_data);
